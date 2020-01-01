@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <title>猜數字遊戲</title>
+
+    <style>
+        body {
+            max-width: 450px;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+
+        #reset_btn {
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        #reset_btn.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <img src="./img/cube-1963036_1920.jpg" class="card-img-top" alt="">
+        <div class="card-body">
+            <h1>猜數字0-100</h1>
+            <p id="content" class="card-text">Some quick example text to build on the card title and make up the bulk of
+                the card's content.</p>
+            <input type="number" id="user_guess_number" min="0" max="100">
+            <button id="btn">送出</button>
+            <button id="reset_btn" class="clear btn btn-info btn-sm"> 再玩一次 </button>
+        </div>
+    </div>
+
+    <script>
+        var answer_number = Math.floor(Math.random() * 101);
+        var input = document.querySelector('#user_guess_number');
+        var btn = document.querySelector('#btn');
+        var reset_btn = document.querySelector('#reset_btn');
+        var user_guess_number;
+        var content = document.querySelector("#content");
+
+        var guss_round = 1;
+        var start_number = 0;
+        var end_number = 100;
+
+        console.log(answer_number);
+
+        btn.onclick = function () {
+            // 抓取input value
+            user_guess_number = parseInt(document.querySelector("#user_guess_number").value);
+
+            if (answer_number === user_guess_number) {
+                // 猜對了 顯示成功  顯示回合數 顯示重製按鈕
+                // console.log("猜對了");
+
+                content.textContent = `恭喜猜對了，你總共花了${guss_round}次，再玩一場吧。`;
+
+            } else if (user_guess_number > answer_number) {
+                // 猜錯了數字太大  顯示失敗 增加回合數 縮小數字範圍
+                // console.log("猜錯了 數字太大");
+                end_number = user_guess_number;
+
+                content.textContent = `猜錯了！數字太大，範圍從${start_number} - ${end_number}。目前使用次數 : ${guss_round}。`;
+                guss_round++;
+
+            } else {
+                // 猜錯了數字太小 顯示失敗 增加回合數 縮小數字範圍
+                console.log("猜錯了 數字太小");
+                start_number = user_guess_number;
+                content.textContent = `猜錯了！數字太小，範圍從${start_number} - ${end_number}。目前次數為 : ${guss_round}。`;
+                guss_round++;
+            }
+        }
+
+        reset_btn.onclick = function () {
+
+            answer = Math.floor(Math.random() * 101);
+            console.log('新的答案是:', answer);
+            start_number = 0;
+            end_number = 100;
+            content = "猜猜數字吧 0--100";
+            guss_round = 0
+            user_guess_number.value = "";
+            reset_btn.classList.remove('active');
+
+        }
+
+    </script>
+    
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+    </script>
+    
+
+</body>
